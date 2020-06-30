@@ -1,7 +1,14 @@
 defmodule Cards do
+@moduledoc """
+   Métodos para crear y repartir un mazo de cartas.
+"""
+
+@doc """
+   Regresa una lista de strings representando un mazo de cartas para jugar.
+"""
  def createDeck do
     values = ["Ace", "Two", "Three", "four", "five"]
-    suits = ["spades", "clubs", "hearts", "diamons"]
+    suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
     
     for suit <- suits,value <- values do
         "#{value} of #{suit}"
@@ -13,10 +20,30 @@ defmodule Cards do
     Enum.shuffle(deck)
  end
 
+@doc """
+   Determina si un mazo contiene una carta.
+
+   ## Examples
+
+        iex(1)> deck = Cards.createDeck
+        iex(2)> Cards.contains?(deck, "Ace of Spades")
+        true 
+"""
  def contains?(deck, card) do
     Enum.member?(deck, card)
  end
 
+@doc """
+   Divide el mazo en una mano.
+   El argumento `handSize` nos indica cuantas cartas deberian estar en la mano.
+
+   ## Examples
+
+         iex> deck = Cards.createDeck
+         iex> {hand, deck} = Cards.deal(deck, 1)
+         iex> hand
+         ["Ace of Spades"]
+"""
  def deal(deck, handSize) do
  #Nos regresa una tupla que en el index 0 tendrá lo que pedimos.
     Enum.split(deck, handSize)
