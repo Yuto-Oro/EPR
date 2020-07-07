@@ -10,6 +10,8 @@ defmodule Identicon do
     |> buildGrid
     |> filterOddEven
     |> buildPixelMap
+    |> drawImage
+    |> saveImage(input)
   end
 
   @doc """
@@ -63,7 +65,31 @@ defmodule Identicon do
   end
 
   def buildPixelMap(%Identicon.Image{grid: grid} = image) do
+    pixelMap = Enum.map grid, fn({_code, index}) ->
+      horizontal = rem(index, 5) * 50
+      vertical = div(index, 5) * 50
+      top_left = {horizontal, vertical}
+      bottom_right = {horizontal + 50, vertical + 50}
+
+      {top_left, bottom_right}
+    end
+
+    %Identicon.Image{image | pixelMap: pixelMap}
+  end
+
+  def drawImage(%Identicon.Image{color: color, pixelMap: pixelMap}) do
+    image = :egd.create(250, 250)
+    fill = :egd.color(color)
     
+    Enum.each pixelMap, fn({start, stop}) ->
+      :egd.filledRectangle(image, start, stop, fill)
+    end
+
+    :egd.render(image)
+  end
+
+  def saveImage(image, input) do
+    File.write("#{input}.png", image)
   end
 
 end
