@@ -23,3 +23,6 @@
 #Ejemplos
     ## Examples
         Dejar 3 espacios
+
+# Para crear un nuevo proyecto con `Phoenix`:
+**mix phx.new "project name"**
